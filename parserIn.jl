@@ -53,9 +53,9 @@ function read_instance(path::String)::Instance
         Q = params.Q,
         F = params.F,
         H = params.H,
-        d = Depot(depot.idx, depot.gps)
-        u = Usine(usine.idx, usine.gps)
-        f = fournisseurs
-        dist = distances
+        d = Depot(depot.idx, depot.gps),
+        u = Usine(usine.idx, usine.gps),
+        f = fournisseurs,
+        dist = distances,
     )
 end
