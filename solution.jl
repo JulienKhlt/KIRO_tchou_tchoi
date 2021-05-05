@@ -1,28 +1,30 @@
 using JSON
 
 struct Tournees
-    id_grpe
-    fournisseurs
-    quantites
+    # Num du Groupe
+    id_grpe::Int
+
+    # Liste des id des fournisseurs ordonnés
+    fournisseurs::Vector{Int}
+
+    # Liste des quantites pris au fournisseur
+    quantites::Vector{Int}
+
+    # Semaine
+    s::Int
+
+    Tournees(id_grpe, fournisseurs, quantites) = new(id_grpe, fournisseurs, quantites)
 end
 
 struct Solution
+    # Liste des id des fournisseurs sous traité
     Sous_traite::Vector{Int}
-    Groupe
+    
+    # Liste des groupes qui contiennent les indices des fournisseurs
+    Groupes::Vector{Vector{Int}}
+
+    # Liste des Tournees
     Tournees
+
+    Solution(Sous_traite, Groupe, Tournees) = new(Sous_traite, Groupe, Tournees)
 end
-
-function parser_out()
-    dict1 = Dict("param1" => 1, "param2" => 2,
-            "dict" => Dict("d1"=>1.,"d2"=>1.,"d3"=>1.))
-            
-    # pass data as a json string (how it shall be displayed in a file)
-    stringdata = JSON.json(dict1)
-
-    # write the file with the stringdata variable information
-    open("write_read.json", "w") do f
-        write(f, stringdata)
-    end
-end
-
-parser_out()
