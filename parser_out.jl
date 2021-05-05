@@ -1,4 +1,4 @@
-include("solution.jl")
+include("Solution.jl")
 
 function parser_out(sol::Solution, file_name)
     dict = Dict()
