@@ -27,7 +27,7 @@ struct Fournisseur
     q::Vector{Int} # Volumes par semaines
     gps::Coord # Coordonnées GPS
 
-    Fournisseur(idx, st_cost, q, gps) = new(idx, st_cost, q, gps)
+    Fournisseur(; idx, st_cost, q, gps) = new(idx, st_cost, q, gps)
 end
 
 struct Instance
@@ -39,7 +39,7 @@ struct Instance
     f::Vector{Fournisseur} # fournisseurs
     dist::Matrix{Int} # Graphe des coûts
 
-    Instance(Q, F, H, d, u, f, dist) = new(Q, F, H, d, u, f, dist)
+    Instance(; Q, F, H, d, u, f, dist) = new(Q, F, H, d, u, f, dist)
 end
 
 function Base.show(io::IO, instance::Instance)
