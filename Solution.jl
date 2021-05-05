@@ -14,7 +14,7 @@ struct Tournee
     # Semaine
     s::Int
 
-    Tournees(id_grpe, fournisseurs, quantites) = new(id_grpe, fournisseurs, quantites)
+    Tournees(; id_grpe, s, fournisseurs, quantites) = new(id_grpe, s, fournisseurs, quantites)
 end
 
 struct Solution
@@ -27,7 +27,7 @@ struct Solution
     # Liste des Tournees
     Tournees::Vector{Tournee}
 
-    Solution(Sous_traite, Groupe, Tournees) = new(Sous_traite, Groupe, Tournees)
+    Solution(; Sous_traite, Groupe, Tournees) = new(Sous_traite, Groupe, Tournees)
 end
 
 function Base.show(io::IO, sol::Solution)

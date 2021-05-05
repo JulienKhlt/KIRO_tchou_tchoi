@@ -19,6 +19,14 @@ function creation_sol(inst, nb_grpe, nb_soustraite)
         push!(Groupe, [fournisseurs[i + nb_soustraite].idx for i in ((g-1)*nb_f + 1):max(g*nb_f, length(fournisseurs))])
     end
     Tournees = []
-
+    for g in 1:length(Groupe)
+        for s in 1:inst.H
+            for f in Groupe[g]
+                fournis = [f]
+                quantites = [max(inst.Q, fournisseurs[f].q[s])]
+                push!(Tournees, Tournee(id_grpe = g, s = s, fournisseurs=fournis, quantites=quantites))
+            end
+        end
+    end
     return Solution(Sous_traite = sous_traite, Groupe = Groupe, Tournees = Tournees)
 end
