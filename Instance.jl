@@ -4,21 +4,21 @@ struct Coord
     x::Float64
     y::Float64
 
-    Coord(x, y) = new(x, y)
+    Coord(; x, y) = new(x, y)
 end
 
 struct Depot
     idx::Int # Indice du sommet correspondant
     gps::Coord # Coordonnées GPS
 
-    Depot(idx, gps) = new(idx, gps)
+    Depot(; idx, gps) = new(idx, gps)
 end
 
 struct Usine
     idx::Int # Indice du sommet correspondant
     gps::Coord # Coordonnées GPS
 
-    Usine(idx, gps) = new(idx, gps)
+    Usine(; idx, gps) = new(idx, gps)
 end
 
 struct Fournisseur
