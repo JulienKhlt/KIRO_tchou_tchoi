@@ -7,7 +7,7 @@ function remove_sous_traite(sol::Solution, idx::Int)::Solution
     Groupes = sol.Groupes
     Tournees = sol.Tournees
 
-    if size(sol.Sous_traite, 1) >= 1
+    if size(sol.Sous_traite, 1) >= 2
         deleteat!(Sous_traite, idx)
     else
         println("Plus de fournisseurs sous-traités.")

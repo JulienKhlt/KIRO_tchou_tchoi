@@ -34,6 +34,7 @@ function read_matrix(data::Vector{String}, n_vertices::Int)::Matrix{Int}
         i = row_split[2]
         j = row_split[3]
         dist[i, j] = row_split[5]
+        println("Distance entre indices $(i) et $(j) : $(dist[i, j])")
     end
     return dist
 end
@@ -47,7 +48,7 @@ function read_instance(path::String)::Instance
     depot = read_vertice(data[2])
     usine = read_vertice(data[3])
     fournisseurs = [read_fournisseur(data[3 + f], params.H) for f = 1:params.F]
-    distances = read_matrix(data[3 + params.F + 1:3 + params.F + 2^(params.F + 2)], params.F + 2)
+    distances = read_matrix([data[3 + params.F + idx] for idx = 1:(2^(params.F + 2))], params.F + 2)
 
     return Instance(
         Q = params.Q,
