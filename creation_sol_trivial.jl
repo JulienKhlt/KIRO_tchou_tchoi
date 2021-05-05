@@ -4,9 +4,14 @@ include("Solution.jl")
 
 function creation_sol(inst, nb_grpe, nb_soustraite)
     """Fonction qui crée des solutions en se basant sur plusieurs paramètres optimisable"""
+    if (nb_grpe <= 0)
+        return 1e100
+    elseif (nb_soustraite <= 0)
+        return 1e100
+    end
     fournisseurs = inst.f
     if (length(fournisseurs) - nb_soustraite) / nb_grpe > 4
-        return 1e10
+        return 1e100
     end
     sous_traite = []
     for i in 1:nb_soustraite

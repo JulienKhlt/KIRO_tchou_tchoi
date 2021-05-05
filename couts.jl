@@ -8,11 +8,11 @@ couts:
 include("Solution.jl")
 
 function cout_tournee(t::Tournee, i::Instance) #cout pour une tournée
-    s = i.dist[i.d.idx, t.fournisseurs[1].idx]
+    s = i.dist[i.d.idx+1, t.fournisseurs[1].idx+1]
     for j in 1:(length(t.fournisseurs)-1)
-        s += i.dist[t.founisseurs[j].idx,t.fournisseurs[j+1].idx]
+        s += i.dist[t.founisseurs[j].idx+1,t.fournisseurs[j+1].idx+1]
     end
-    s += i.dist[t.fournisseurs[end].idx, i.u.idx]
+    s += i.dist[t.fournisseurs[end].idx+1, i.u.idx+1]
     return s
 end
 
@@ -27,5 +27,7 @@ function couts(sol::Solution, inst::Instance)
     return c
 end
 
-
+function couts(large::Float64, inst::Instance)
+    return large
+end
 
