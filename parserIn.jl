@@ -61,6 +61,3 @@ function read_instance(path::String)::Instance
         dist = distances,
     )
 end
-
-instance = read_instance("instances/Instance-propre.csv")
-print(instance)
