@@ -49,8 +49,6 @@ function read_instance(path::String)::Instance
     fournisseurs = [read_fournisseur(data[3 + f], params.H) for f = 1:params.F]
     distances = read_matrix(data[3 + params.F + 1:3 + params.F + 2^(params.F + 2)], params.F + 2)
 
-    print(params)
-
     return Instance(
         Q = params.Q,
         F = params.F,
