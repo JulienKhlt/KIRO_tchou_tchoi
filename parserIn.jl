@@ -13,7 +13,7 @@ function read_vertice(row::String)::NamedTuple
     row_split = split(row, r"\s+")
     return (
         idx = parse(Int, row_split[2]),
-        gps = Coord(parse(Float64, row_split[4]), parse(Float64, row_split[5]))
+        gps = Coord(x = parse(Float64, row_split[4]), y = parse(Float64, row_split[5]))
     )
 end
 
@@ -23,7 +23,7 @@ function read_fournisseur(row::String, horizon::Int)::Fournisseur
         idx = parse(Int, row_split[2]),
         st_cost = parse(Int, row_split[4]),
         q = [parse(Int, row_split[5 + h]) for h = 1:horizon],
-        gps = Coord(parse(Float64, row_split[7 + horizon]), parse(Float64, row_split[8 + horizon])),
+        gps = Coord(x = parse(Float64, row_split[7 + horizon]), y = parse(Float64, row_split[8 + horizon])),
     )
 end
 
@@ -55,12 +55,9 @@ function read_instance(path::String)::Instance
         Q = params.Q,
         F = params.F,
         H = params.H,
-        d = Depot(depot.idx, depot.gps),
-        u = Usine(usine.idx, usine.gps),
+        d = Depot(idx = depot.idx, gps = depot.gps),
+        u = Usine(idx = usine.idx, gps = usine.gps),
         f = fournisseurs,
         dist = distances,
     )
 end
-
-instance = read_instance("instances/Instance-propre.csv")
-print(instance)
