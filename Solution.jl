@@ -5,16 +5,16 @@ struct Tournee
     # Num du Groupe
     id_grpe::Int
 
+    # Semaine
+    s::Int
+
     # Liste des id des fournisseurs ordonnés
-    fournisseurs::Vector{Int}
+    fournisseurs::Vector{Fournisseur}
 
     # Liste des quantites pris au fournisseur
     quantites::Vector{Int}
 
-    # Semaine
-    s::Int
-
-    Tournees(; id_grpe, s, fournisseurs, quantites) = new(id_grpe, s, fournisseurs, quantites)
+    Tournee(; id_grpe, s, fournisseurs, quantites) = new(id_grpe, s, fournisseurs, quantites)
 end
 
 struct Solution
@@ -27,7 +27,7 @@ struct Solution
     # Liste des Tournees
     Tournees::Vector{Tournee}
 
-    Solution(; Sous_traite, Groupe, Tournees) = new(Sous_traite, Groupe, Tournees)
+    Solution(; Sous_traite, Groupes, Tournees) = new(Sous_traite, Groupes, Tournees)
 end
 
 function Base.show(io::IO, sol::Solution)
@@ -35,18 +35,18 @@ function Base.show(io::IO, sol::Solution)
     for i in 1:length(sol.Sous_traite)
         str *= " $(sol.Sous_traite[i].idx) "
     end
-    str *= "Groupe : \n"
-    for i in 1:length(sol.Groupe)
-        for j in 1:length(sol.Groupe[i])
-            str *= " $(sol.Groupe[i][j]) "
+    str *= "\nGroupe : \n"
+    for i in 1:length(sol.Groupes)
+        for j in 1:length(sol.Groupes[i])
+            str *= " $(sol.Groupes[i][j]) "
         end
         str *= "\n"
     end
     str *= "Tournées : \n"
-    for i in 1:length(Tournees)
-        str *= " $(Tournees[i].s) $(Tournees[i].id_grpe)\n"
-        for j in 1:length(Tournees[i].fournisseurs)
-            str *= "    $(Tournees[i].fournisseurs[j]) $(Tournees[i].quantites[j])\n"
+    for i in 1:length(sol.Tournees)
+        str *= " $(sol.Tournees[i].s) $(sol.Tournees[i].id_grpe)\n"
+        for j in 1:length(sol.Tournees[i].fournisseurs)
+            str *= "    $(sol.Tournees[i].fournisseurs[j].idx) $(sol.Tournees[i].quantites[j])\n"
         end
     end
     print(io, str)
