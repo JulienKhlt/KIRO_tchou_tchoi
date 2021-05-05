@@ -1,4 +1,5 @@
 using JSON
+include("Instance.jl")
 
 struct Tournees
     # Num du Groupe
@@ -18,7 +19,7 @@ end
 
 struct Solution
     # Liste des id des fournisseurs sous traité
-    Sous_traite::Vector{Int}
+    Sous_traite::Vector{fournisseur}
     
     # Liste des groupes qui contiennent les indices des fournisseurs
     Groupes::Vector{Vector{Int}}
