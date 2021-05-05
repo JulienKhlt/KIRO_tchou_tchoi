@@ -1,31 +1,34 @@
 # Fichier regroupant les structures permettant de construire l'instance
 
-mutable struct coord
+mutable struct Coord
     x::Float64
     y::Float64
 
-    coord(; x, y) = new(x, y)
+    Coord(; x, y) = new(x, y)
 end
 
-mutable struct depot
+mutable struct Depot
     idx::Int # Indice du sommet correspondant
     gps::coord # Coordonnées GPS
 
-    depot(; d, g) = new(d, g)
+    Depot(; d, g) = new(d, g)
 end
 
-mutable struct usine
+mutable struct Usine
     idx::Int # Indice du sommet correspondant
     gps::coord # Coordonnées GPS
 
-    usine(; u, g) = new(u, g)
+    Usine(; u, g) = new(u, g)
 end
 
-mutable struct fournisseur
+mutable struct Fournisseur
     idx::Int # Indice du sommet correspondant
     st_cost::Int # Coût de sous-traitance
     q::Vector{Int} # Volumes par semaines
     gps::coord # Coordonnées GPS
+
+    Fournisseur(; idx, st_cost, q, gps) = new(; idx, st_cost, q, gps)
+end
 
 mutable struct Instance
     Q::Int # Taille des camions
