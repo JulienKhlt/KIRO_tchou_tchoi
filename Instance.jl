@@ -11,14 +11,14 @@ struct Depot
     idx::Int # Indice du sommet correspondant
     gps::Coord # Coordonnées GPS
 
-    Depot(d, g) = new(d, g)
+    Depot(idx, gps) = new(idx, gps)
 end
 
 struct Usine
     idx::Int # Indice du sommet correspondant
     gps::Coord # Coordonnées GPS
 
-    Usine(u, g) = new(u, g)
+    Usine(idx, gps) = new(idx, gps)
 end
 
 struct Fournisseur
@@ -39,7 +39,7 @@ struct Instance
     f::Vector{Fournisseur} # fournisseurs
     dist::Matrix{Int} # Graphe des coûts
 
-    Instance(Q, F, H, d, u) = new(Q, F, H, d, u)
+    Instance(Q, F, H, d, u, f, dist) = new(Q, F, H, d, u, f, dist)
 end
 
 function Base.show(io::IO, instance::Instance)
