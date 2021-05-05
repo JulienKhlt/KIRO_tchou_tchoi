@@ -9,13 +9,15 @@ function best_move(sol::Solution, inst::Instance, move, param_range)
         new_sol = move(sol, param)
         costs.push(couts(new_sol, inst))
     end
-    return param_range(argmin(costs))
+    return move(sol, param_range(argmin(costs)))
 end
 
-function descent_local(sol::Solution, best_mov)
+function descent_local(sol::Solution, inst::Instance, best_mov)
+    # Solution et coût initiaux
     best_sol = sol
     cout_sol = cout(sol)
-    new_sol = best_mov(sol)  #parcourir tous les mov possible
+    # On parcourt une plage de paramètres pour move pour utiliser move de manière optimale
+    new_sol = best_move(sol, inst, move, [])
     cout_new = cout(new_sol)
     if cout_sol>cout_new
         best_sol = new_sol
