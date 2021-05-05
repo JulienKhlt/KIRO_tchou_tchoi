@@ -1,14 +1,12 @@
 import JSON
-include("Instance.jl")
 
 function parser_in(path::String)::Dict
-    dict2 = Dict()
+    dict = Dict()
     open(path, "r") do f
-        global dict2
-        dicttxt = readall(f)
-        dict2=JSON.parse(dicttxt)
+        dicttxt = read(f, String)
+        dict = JSON.parse(dicttxt)
     end
-    return dict2
+    return dict
 end
 
-print(parser_in("appsscript.json"))
+print(parser_in("appsscript.json")["runtimeVersion"])
