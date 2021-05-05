@@ -25,5 +25,7 @@ function couts(sol::Solution,inst::Instance)
         c += f.st_cost
      end
      return c
-
 end
+
+
+
