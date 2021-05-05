@@ -5,7 +5,7 @@ couts:
 - Date: 2021-05-05
 =#
 
-include("solution.jl")
+include("Solution.jl")
 
 function cout_tournee(t::Tournee, i::Instance) #cout pour une tournée
     s = Dist(i.usine.idx,t.fournisseurs[1].idx)
@@ -21,10 +21,10 @@ function couts(sol::Solution,inst::Instance)
     for t in sol.Tournees
         c += cout_tournee(t,inst)
     end
-     for f in sol.Sous_traite
-        c += f.st_cost
-     end
-     return c
+    for f in sol.Sous_traite
+    c += f.st_cost
+    end
+    return c
 end
 
 
