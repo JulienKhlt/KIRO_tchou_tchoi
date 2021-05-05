@@ -1,7 +1,7 @@
 include("solution.jl")
 
 function parser_out(sol::Solution, file_name)
-    dict = Dict("param1" => 1, "param2" => 2)
+    dict = Dict()
     get!(dict, "param3", 8)
             
     # pass data as a json string (how it shall be displayed in a file)
