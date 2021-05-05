@@ -1,4 +1,5 @@
 using JSON
+include("instance.jl")
 
 struct Tournees
     id_grpe
@@ -7,7 +8,7 @@ struct Tournees
 end
 
 struct Solution
-    Sous_traite::Vector{Int}
+    Sous_traite::Vector{fournisseur}
     Groupe
     Tournees
 end
