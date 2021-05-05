@@ -8,18 +8,24 @@ mutable struct coord
 end
 
 mutable struct depot
-    d::Int # Indice du sommet correspondant
-    g::coord # Coordonnées GPS
+    idx::Int # Indice du sommet correspondant
+    gps::coord # Coordonnées GPS
 
     depot(; d, g) = new(d, g)
 end
 
 mutable struct usine
-    u::Int# Indice du sommet correspondant
-    g::coord # Coordonnées GPS
+    idx::Int # Indice du sommet correspondant
+    gps::coord # Coordonnées GPS
 
     usine(; u, g) = new(u, g)
 end
+
+mutable struct fournisseur
+    idx::Int # Indice du sommet correspondant
+    st_cost::Int # Coût de sous-traitance
+    q::Vector{Int} # Volumes par semaines
+    gps::coord # Coordonnées GPS
 
 mutable struct Instance
     Q::Int # Taille des camions
@@ -27,6 +33,8 @@ mutable struct Instance
     H::Int # Nombre de semaines
     d::depot # Dépôt
     u::usine # Usine
+    f::Vector{fournisseur} # fournisseurs
+    dist::Matrix{Int} # Graphe des coûts
 
     Instance(; Q, F, H, d, u) = new(Q, F, H, d, u)
 end
