@@ -1,8 +1,6 @@
 include("Instance.jl")
 include("parserIn.jl")
 
-inst = read_instance("Instance")
-
 function creation_sol(inst, nb_grpe, nb_soustraite)
     """Fonction qui crée des solutions en se basant sur plusieurs paramètres optimisable"""
     fournisseurs = inst.f
