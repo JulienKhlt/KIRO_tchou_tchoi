@@ -1,9 +1,6 @@
 include("couts.jl")
 include("Instance.jl")
-include("aubin.jl")
 include("Solution.jl")
-include("creation_sol_trivial.jl")
-include("parserIn.jl")
 
 # Première manière de définir un voisinage
 function move(sol::Solution, x::Int)::Solution
@@ -41,7 +38,3 @@ function descent_local(sol::Solution, inst::Instance, move, n_iterations, verbos
     end
     return best_sol
 end
-
-inst = read_instance("instances/Instance-propre.csv")
-sol = creation_sol(inst, 100, 100)
-sol = descent_local(sol, inst, remove_sous_traite, 300, true)

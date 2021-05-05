@@ -27,14 +27,13 @@ function read_fournisseur(row::String, horizon::Int)::Fournisseur
     )
 end
 
-function read_matrix(data::Vector{String}, n_vertices::Int)::Matrix{Int}
+function read_distances(data::Vector{String}, n_vertices::Int)::Matrix{Int}
     dist = zeros(Int, n_vertices, n_vertices)
     for row in data
         row_split = split(row, r"\s+")
-        i = row_split[2]
-        j = row_split[3]
-        dist[i, j] = row_split[5]
-        println("Distance entre indices $(i) et $(j) : $(dist[i, j])")
+        i = parse(Int, row_split[2])
+        j = parse(Int, row_split[3])
+        dist[i + 1, j + 1] = parse(Int, row_split[5])
     end
     return dist
 end
@@ -44,11 +43,12 @@ function read_instance(path::String)::Instance
         readlines(file)
     end
 
+    println("Lecture de l'instance")
     params = read_parameters(data[1])
     depot = read_vertice(data[2])
     usine = read_vertice(data[3])
     fournisseurs = [read_fournisseur(data[3 + f], params.H) for f = 1:params.F]
-    distances = read_matrix([data[3 + params.F + idx] for idx = 1:(2^(params.F + 2))], params.F + 2)
+    distances = read_distances([data[3 + params.F + idx] for idx = 1:trunc(Int, (params.F + 2) * (params.F + 1) / 2)], params.F + 2)
 
     return Instance(
         Q = params.Q,
