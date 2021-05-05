@@ -1,5 +1,6 @@
 include("couts.jl")
 include("Instance.jl")
+include("aubin.jl")
 
 # Première manière de définir un voisinage
 function move(sol::Solution, x::Int)::Solution
