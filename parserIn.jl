@@ -27,8 +27,8 @@ function read_fournisseur(row::String, horizon::Int)::Fournisseur
     )
 end
 
-function read_matrix(data::Vector{String}, f::Int)::Matrix{Int}
-    dist = zeros(Int, f, f)
+function read_matrix(data::Vector{String}, n_vertices::Int)::Matrix{Int}
+    dist = zeros(Int, n_vertices, n_vertices)
     for row in data
         row_split = split(row, r"\s+")
         i = row_split[2]
@@ -47,7 +47,7 @@ function read_instance(path::String)::Instance
     depot = read_vertice(data[2])
     usine = read_vertice(data[3])
     fournisseurs = [read_fournisseur(data[3 + f], params.H) for f = 1:params.F]
-    distances = read_matrix(data[3 + params.F + 1:3 + params.F + 2^params.F], params.F)
+    distances = read_matrix(data[3 + params.F + 1:3 + params.F + 2^(params.F + 2)], params.F + 2)
 
     print(params)
 
