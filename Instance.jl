@@ -15,6 +15,7 @@ struct Train
 
     Train(; id, sensDepart, voieEnLigne, voieAQuai, typeCirculation, dateHeure, typesMateriels) = new(id, sensDepart, voieEnLigne, voieAQuai, typeCirculation, dateHeure, typesMateriels)
 end
+
 struct Itineraire
     id::Int
     sensDepart::Bool
@@ -34,6 +35,7 @@ struct InterdictionsQuais
 end
 
 struct Instance
+    c0::Int
     trains::Vector{Vector{Train}}
     itineraires::Vector{Itineraire}
     voiesAQuai::Vector{String}
@@ -41,11 +43,48 @@ struct Instance
     interdictionsQuais::Vector{InterdictionsQuais}
     contraintes::Vector{Vector{Int}}
 
-    Instance(; trains, itineraires, voiesAQuai, voiesEnLigne, interdictionsQuais, contraintes) = new(trains, itineraires, voiesAQuai, voiesEnLigne, interdictionsQuais, contraintes)
+    Instance(; c0, trains, itineraires, voiesAQuai, voiesEnLigne, interdictionsQuais, contraintes) = new(c0, trains, itineraires, voiesAQuai, voiesEnLigne, interdictionsQuais, contraintes)
 end
 
 function Base.show(io::IO, inst::Instance)
     str = "\nInstance"
-    str *= "\n   Contraintes : $(inst.contraintes)"
+    str *= "\n   Coût de non affectation : $(inst.c0)"
+    str *= "\n   Nombre de groupes : $(length(inst.trains))"
+    # str *= "\n   Nombre de trains par groupe : $([size(inst.trains[g], 1) for g = 1:inst.trains])"
+    str *= "\n   Nombre d'itinéraires : $(length(inst.itineraires))"
+    str *= "\n   Voies à quai : $(inst.voiesAQuai)"
+    str *= "\n   Voies en ligne : $(inst.voiesEnLigne)"
+    str *= "\n   Nombre d'interdictions : $(length(inst.interdictionsQuais))"
+    str *= "\n   Nombre de contraintes : $(length(inst.contraintes))"
+    print(io, str)
+end
+
+function Base.show(io::IO, train::Train)
+    str = "\nTrains"
+    str *= "\n   id : $(train.id)"
+    str *= "\n   sensDepart : $(train.sensDepart)"
+    str *= "\n   voieEnLigne : $(train.voieEnLigne)"
+    str *= "\n   voieAQuai : $(train.voieAQuai)"
+    str *= "\n   typeCirculation : $(train.typeCirculation)"
+    str *= "\n   dateHeure : $(train.dateHeure)"
+    str *= "\n   typesMateriels : $(train.typesMateriels)"
+    print(io, str)
+end
+
+function Base.show(io::IO, itineraire::Itineraire)
+    str = "\nItineraires"
+    str *= "\n   id : $(itineraire.id)"
+    str *= "\n   sensDepart : $(itineraire.sensDepart)"
+    str *= "\n   voieEnLigne : $(itineraire.voieEnLigne)"
+    str *= "\n   voieAQuai : $(itineraire.voieAQuai)"
+    print(io, str)
+end
+
+function Base.show(io::IO, interdiction::InterdictionsQuais)
+    str = "\nInterdictionsQuais"
+    str *= "\n   voiesAQuaiInterdites : $(interdiction.voiesAQuaiInterdites)"
+    str *= "\n   voiesEnLigne : $(interdiction.voiesEnLigne)"
+    str *= "\n   typesMateriels : $(interdiction.typesMateriels)"
+    str *= "\n   typesCirculation : $(interdiction.typesCirculation)"
     print(io, str)
 end
