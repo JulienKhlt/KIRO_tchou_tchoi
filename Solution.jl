@@ -30,7 +30,7 @@ function Base.show(io::IO, sol::Solution)
     end
     str *= "\nAffecte :\n"
     for i in 1:length(sol.Affecte)
-        str *= " $(sol.Affecte[i].id_train), voie : $(sol.Affecte[i].voie_Quai), itinéraire : $(sol.Affecte[i].it)"
+        str *= " $(sol.Affecte[i].id_train), voie : $(sol.Affecte[i].voie_Quai), itinéraire : $(sol.Affecte[i].it.id)"
     end
     print(io, str)
 end
