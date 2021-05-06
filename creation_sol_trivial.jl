@@ -1,5 +1,6 @@
 include("Instance.jl")
 include("Solution.jl")
+include("aubin.jl")
 
 function material_in(train, interdiQ)
     for mat in train.typesMateriels
@@ -40,10 +41,6 @@ function find_it(inst, train, quai)
         if train.voieEnLigne == it.voieEnLigne && quai == it.voieAQuai && train.sensDepart == it.sensDepart 
             push!(all_it, it)
         end
-    end
-    if train.id == 593
-        println(quai)
-        println(all_it)
     end
     return all_it
 end
@@ -91,8 +88,17 @@ function creation_sol(inst, nb_nonaffecte, fast=true)
         if length(Non_Affecte_groupe) == 0
             append!(Affecte, Affecte_groupe)
         else
+            quai = possible_quais(groupe, inst)
             for train in groupe
-                push!(Non_Affecte, Affectation_Train(id=train.id, voie_Quai="notAffected", it=Itineraire(id="notAffected", sensDepart=true, voieEnLigne="", voieAQuai="")))
+                all_it = find_it(inst, train, quai[2])
+                all_it = find_all_possible(inst, train, all_it, quai[2])
+                if length(all_it) == 1 || fast
+                    it = all_it[1]
+                else
+                    it = best_it(inst, train.id, all_it, before)
+                end
+                push!(Affecte, Affectation_Train(id=train.id, voie_Quai=quai[1], it=it))
+                get!(before, "$(train.id)", it.id)
             end
         end
     end
