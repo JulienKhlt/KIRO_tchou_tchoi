@@ -24,7 +24,7 @@ function descent_local(sol::Solution, inst::Instance, move, verbose::Bool=false)
     while count < 2 * length(best_sol.Affecte) && n_iter < 150
         # On parcourt une plage de paramètres pour move pour utiliser move de manière optimale
         # new_sol = best_move(best_sol, inst, move, 1:length(best_sol.Affecte)) # /!\ Changer la plage de paramètre en fonction du move
-        new_sol = move(sol, inst, rand(1:length(best_sol.Affecte)))
+        new_sol = move(best_sol, inst, rand(1:length(best_sol.Affecte)))
         cout_new = couts(new_sol, inst)
         if verbose
             println("Coût initial : $(cout_sol)")
@@ -38,6 +38,51 @@ function descent_local(sol::Solution, inst::Instance, move, verbose::Bool=false)
             count += 1
         end
         n_iter += 1
+    end
+    return best_sol
+end
+
+function descent_local_combine(sol::Solution, inst::Instance, move1, move2, verbose::Bool=false)
+    # Solution et coût initiaux
+    best_sol = sol
+    cout_sol = couts(sol, inst)
+    while total_count < 3
+        count1 = 0
+        n_iter = 0
+        while count1 < 2 * length(best_sol.Affecte) && n_iter < 100
+            new_sol = move1(best_sol, inst, rand(1:length(best_sol.Affecte)))
+            cout_new = couts(new_sol, inst)
+            if verbose
+                println("Coût initial : $(cout_sol)")
+                println("Coût final : $(cout_new)")
+            end
+            if cout_sol > cout_new
+                best_sol = new_sol
+                cout_sol = cout_new
+                count1 = 0
+            else
+                count1 += 1
+            end
+            n_iter += 1
+        end
+        count2 = 0
+        n_iter = 0
+        while count2 < 2 * length(best_sol.Affecte) && n_iter < 100
+            new_sol = move2(best_sol, inst, rand(1:length(best_sol.Affecte)))
+            cout_new = couts(new_sol, inst)
+            if verbose
+                println("Coût initial : $(cout_sol)")
+                println("Coût final : $(cout_new)")
+            end
+            if cout_sol > cout_new
+                best_sol = new_sol
+                cout_sol = cout_new
+                count1 = 0
+            else
+                count1 += 1
+            end
+            n_iter += 1
+        end
     end
     return best_sol
 end
