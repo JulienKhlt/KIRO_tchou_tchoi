@@ -10,17 +10,26 @@ include("Solution.jl")
 function couts(sol::Solution, inst::Instance, verbose::Bool = false)
     c_n_a = length(sol.Non_Affecte)*inst.c0
     c_n = 0
-    for t in sol.Affecte
-        for tp in sol.Affecte
-            t1 = t.id
-            i1 = t.it.id
-            t2 = tp.id
-            i2 = tp.it.id
-            for cont in inst.contraintes
-                if t1 == cont[1] && i1 == cont[2] && t2 == cont[3] && i2 == cont[4]
-                    c_n +=cont[5]
+    for cont in inst.contraintes
+        first = false
+        second = false
+        for train in sol.Affecte
+            if train.id == cont[1]
+                if train.it.id == cont[2]
+                    first = true
+                else
+                    break
+                end
+            elseif train.id == cont[3]
+                if train.it.id == cont[4]
+                    second = true
+                else
+                    break
                 end
             end
+        end
+        if first && second
+            c_n += cont[5]
         end
     end
 
