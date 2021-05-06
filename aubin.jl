@@ -17,7 +17,7 @@ function itineraires_possibles(itineraire::Itineraire, inst::Instance)::Vector{I
 end
 
 #= train_idx : indice du train à changer (indice dans la liste Affecte) =#
-function best_itineraire(sol::Solution, train_idx::Int, it_possibles::Vector{Itineraire})::Itineraire
+function best_itineraire(sol::Solution, inst::Instance, train_idx::Int, it_possibles::Vector{Itineraire})::Itineraire
     it_couts = []
     for itineraire in it_possibles
         # Calcul du coût lié à une nouvelle affectation où un train (d'indice train_idx) a un itinéraire différent
@@ -37,7 +37,7 @@ function changer_itineraire(sol::Solution, inst::Instance, train_idx::Int, verbo
     
     it_possibles = itineraires_possibles(Affecte[train_idx].it, inst)
     if length(it_possibles) > 0
-        best_it = best_itineraire(sol, train_idx, it_possibles)
+        best_it = best_itineraire(sol, inst, train_idx, it_possibles)
         new_affectation = Affectation_Train(id = sol.Affecte[train_idx].id, voie_Quai = sol.Affecte[train_idx].voie_Quai, it = best_it)
         Affecte[train_idx] = new_affectation
     else
@@ -49,23 +49,44 @@ function changer_itineraire(sol::Solution, inst::Instance, train_idx::Int, verbo
     return Solution(Non_Affecte = Non_Affecte, Affecte = Affecte)
 end
 
+function is_not_possible(train::Train, quai::String, interdictions::Vector{InterdictionsQuais})::Bool
+    for interdiction in interdictions
+        if (quai in interdiction.voiesAQuaiInterdites)
+            if (material_in(train, interdiction) || train.typeCirculation in interdiction.typesCirculation || train.voieEnLigne in interdiction.voiesEnLigne)
+                return true
+            end
+        end
+    end
+    return false
+end
+
+function possible_quais(groupe::Vector{Train}, inst::Instance)::Vector{String}
+    quais = []
+    for quai in inst.voiesAQuai
+        forbid = false
+        for train in groupe
+            if is_not_possible(train, quai, inst.interdictionsQuais)
+                forbid = true
+            end
+        end
+        if !forbid
+            push!(quais, quai)
+        end
+    end
+    return quais
+end
+
 inst = read_instance("instances/NS.json")
 sol = creation_sol(inst, 0)
-println("Solution crée !")
-sol = descent_local(sol, inst, changer_itineraire, true)
+println(inst)
 
-parser_out(sol, "descenteLocaleAubinNS.json")
+# names_instances = ["A", "NS", "PMP", "PE"]
 
-PMP = read_instance("instances/PMP.json")
-PMP_sol = creation_sol(PMP, 0)
-println("Solution crée !")
-PMP_sol = descent_local(PMP_sol, PMP, changer_itineraire, true)
-
-parser_out(PMP_sol, "descenteLocaleAubinPMP.json")
-
-PE = read_instance("instances/PE.json")
-PE_sol = creation_sol(PE, 0)
-println("Solution crée !")
-PE_sol = descent_local(PE_sol, PE, changer_itineraire, true)
-
-parser_out(PE_sol, "descenteLocaleAubinPE.json")
+# for name_instance in names_instances
+#     inst = read_instance("instances/$(name_instance).json")
+#     sol = creation_sol(inst, 0)
+#     println("Solution crée !")
+#     sol = descent_local(sol, inst, changer_itineraire, true)
+#     println("Coût final enregistré : $(couts(sol, inst)) \n ")
+#     parser_out(sol, "descenteLocaleAubin$(name_instance).json")
+# end

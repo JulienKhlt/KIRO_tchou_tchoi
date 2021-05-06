@@ -21,7 +21,7 @@ function descent_local(sol::Solution, inst::Instance, move, verbose::Bool=false)
     cout_sol = couts(sol, inst)
     count = 0
     n_iter = 0
-    while count < length(best_sol.Affecte) && n_iter < 300
+    while count < 2 * length(best_sol.Affecte) && n_iter < 150
         # On parcourt une plage de paramètres pour move pour utiliser move de manière optimale
         # new_sol = best_move(best_sol, inst, move, 1:length(best_sol.Affecte)) # /!\ Changer la plage de paramètre en fonction du move
         new_sol = move(sol, inst, rand(1:length(best_sol.Affecte)))
