@@ -1,38 +1,56 @@
 include("Instance.jl")
-include("parserIn.jl")
 include("Solution.jl")
 
-function creation_sol(inst, nb_grpe, nb_soustraite)
-    """Fonction qui crée des solutions en se basant sur plusieurs paramètres optimisable"""
-    if (nb_grpe <= 0)
-        return 1e100
-    elseif (nb_soustraite <= 0)
-        return 1e100
-    end
-    fournisseurs = inst.f
-    if (length(fournisseurs) - nb_soustraite) / nb_grpe > 4
-        return 1e100
-    end
-    sous_traite = []
-    for i in 1:nb_soustraite
-        if nb_soustraite <= length(fournisseurs)
-            push!(sous_traite, fournisseurs[i])
+function material_in(train, interdiQ)
+    for mat in train.typesMateriels
+        if mat in interdiQ.typesMateriels
+            return true
         end
     end
-    Groupes = []
-    nb_f = floor((length(fournisseurs) - nb_soustraite) / nb_grpe)
-    for g in 1:min(nb_grpe, length(fournisseurs))
-        push!(Groupes, [fournisseurs[Int(i) + nb_soustraite].idx for i in ((g-1)*nb_f + 1):min(g*nb_f, length(fournisseurs)- nb_soustraite)])
-    end
-    Tournees = []
-    for g in 1:length(Groupes)
-        for s in 1:inst.H
-            for f in Groupes[g]
-                fournis = [fournisseurs[f]]
-                quantites = [max(inst.Q, fournisseurs[f].q[s])]
-                push!(Tournees, Tournee(id_grpe = g, s = s, fournisseurs=fournis, quantites=quantites))
+    return false
+end  
+
+function find_all_possible(inst, train, all_it)
+    new_all_it = []
+    for it in all_it
+        for i in 1:length(inst.interdictionsQuais)
+            if train.voieEnLigne in inst.interdictionsQuais[i].voiesEnLigne
+                if !(material_in(train, inst.interdictionsQuais[i]) || train.typeCirculation in inst.interdictionsQuais[i].typesCirculation || train.voieEnLigne in inst.interdictionsQuais[i].voieEnLigne)
+                    push!(new_all_it, it)
+                end
             end
         end
     end
-    return Solution(Sous_traite = sous_traite, Groupes = Groupes, Tournees = Tournees)
+    return new_all_it
+end
+
+function find_it(inst, train)
+    all_it = []
+    for it in inst.itineraires
+        if train.voieEnLigne == it.voieEnLigne && train.voieAQuai == it.voieAQuai
+            return push!(all_it, it)
+        end
+    end
+    return all_it
+end
+
+function creation_sol(inst, nb_nonaffecte)
+    Non_Affecte = []
+    Affecte = []
+    for groupe in inst.trains
+        Affecte_groupe = []
+        Non_Affecte_groupe = []
+        for train in groupe
+            all_it = find_it(inst, train)
+            println(all_it)
+            all_it = find_all_possible(inst, train, all_it)
+            println(all_it)
+            if length(all_it) != 0
+                push!(Affecte, Affectation_Train(id=train.id, voie_Quai=train.voie_Quai, it=all_it[1]))
+            else
+                push!(Non_Affecte, Affectation_Train(id=train.id, voie_Quai="notAffected", it=Itineraire(id="notAffected", sensDepart=true, voieEnLigne="", voieAQuai="")))
+            end
+        end
+    end
+    return Solution(Non_Affecte=Non_Affecte, Affecte=Affecte)
 end
