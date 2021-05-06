@@ -15,7 +15,9 @@ function creation_sol(inst, nb_grpe, nb_soustraite)
     end
     sous_traite = []
     for i in 1:nb_soustraite
-        push!(sous_traite, fournisseurs[i])
+        if nb_soustraite <= length(fournisseurs)
+            push!(sous_traite, fournisseurs[i])
+        end
     end
     Groupes = []
     nb_f = floor((length(fournisseurs) - nb_soustraite) / nb_grpe)
