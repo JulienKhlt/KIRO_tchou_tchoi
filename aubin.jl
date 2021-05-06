@@ -55,7 +55,7 @@ for name_instance in names_instances
     inst = read_instance("instances/$(name_instance).json")
     sol = creation_sol(inst, 0)
     println("Solution crée !")
-    sol = descent_local(sol, inst, changer_itineraire, true)
+    sol = descent_local(sol, inst, changer_itineraire, 800, true)
     println("Coût final enregistré : $(couts(sol, inst)) \n ")
     parser_out(sol, "descenteLocaleAubin$(name_instance).json")
 end
