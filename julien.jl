@@ -24,7 +24,7 @@ include("creation_sol_trivial.jl")
 # println(@time get_best_sol(eval_sol, [100., 100.], [0.5, 1.]))
 # println(@time get_best_sol(eval_sol, [100., 100.], [0.5, 1.]))
 
-inst = read_instance("instances/A.json")
+inst = read_instance("instances/NS.json")
 println(@time sol = creation_sol(inst, 0))
 # println(@time sol = creation_sol(inst, 0))
 println(sol)
