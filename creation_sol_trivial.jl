@@ -49,8 +49,15 @@ function creation_sol(inst, nb_nonaffecte)
             all_it = find_it(inst, train)
             all_it = find_all_possible(inst, train, all_it)
             if length(all_it) != 0
-                push!(Affecte, Affectation_Train(id=train.id, voie_Quai=train.voieAQuai, it=all_it[1]))
+                push!(Affecte_groupe, Affectation_Train(id=train.id, voie_Quai=train.voieAQuai, it=all_it[1]))
             else
+                push!(Non_Affecte_groupe, Affectation_Train(id=train.id, voie_Quai="notAffected", it=Itineraire(id="notAffected", sensDepart=true, voieEnLigne="", voieAQuai="")))
+            end
+        end
+        if length(Non_Affecte_groupe) == 0
+            append!(Affecte, Affecte_groupe)
+        else
+            for train in groupe
                 push!(Non_Affecte, Affectation_Train(id=train.id, voie_Quai="notAffected", it=Itineraire(id="notAffected", sensDepart=true, voieEnLigne="", voieAQuai="")))
             end
         end
