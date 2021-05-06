@@ -7,20 +7,20 @@ include("Solution.jl")
 function best_move(sol::Solution, inst::Instance, move, param_range)
     costs = []
     for param in param_range
-        new_sol = move(sol, param)
+        new_sol = move(sol, inst, param)
         push!(costs, couts(new_sol, inst))
     end
-    return move(sol, param_range[argmin(costs)])
+    return move(sol, inst, param_range[argmin(costs)])
 end
 
 # Descente locale avec une fonction move en argument qui prend 1 paramètre
-function descent_local(sol::Solution, inst::Instance, move, n_iterations, param_range, verbose::Bool=false)
+function descent_local(sol::Solution, inst::Instance, move, n_iterations, verbose::Bool=false)
     # Solution et coût initiaux
     best_sol = sol
     cout_sol = couts(sol, inst)
     for i = 1:n_iterations
         # On parcourt une plage de paramètres pour move pour utiliser move de manière optimale
-        new_sol = best_move(best_sol, inst, move, param_range) # /!\ Changer la plage de paramètre en fonction du move
+        new_sol = best_move(best_sol, inst, move, 1:length(best_sol.Affecte)) # /!\ Changer la plage de paramètre en fonction du move
         cout_new = couts(new_sol, inst)
         if verbose
             println("Coût : $(cout_sol)")
@@ -29,9 +29,6 @@ function descent_local(sol::Solution, inst::Instance, move, n_iterations, param_
             best_sol = new_sol
             cout_sol = cout_new
         end
-
     end
     return best_sol
 end
-
-
