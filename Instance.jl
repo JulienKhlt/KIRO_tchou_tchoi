@@ -17,7 +17,7 @@ struct Train
 end
 
 struct Itineraire
-    id::Int
+    id
     sensDepart::Bool
     voieEnLigne::String
     voieAQuai::String
