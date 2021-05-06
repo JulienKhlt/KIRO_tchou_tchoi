@@ -15,6 +15,7 @@ struct Train
 
     Train(; id, sensDepart, voieEnLigne, voieAQuai, typeCirculation, dateHeure, typesMateriels) = new(id, sensDepart, voieEnLigne, voieAQuai, typeCirculation, dateHeure, typesMateriels)
 end
+
 struct Itineraire
     id::Int
     sensDepart::Bool
@@ -47,5 +48,35 @@ end
 function Base.show(io::IO, inst::Instance)
     str = "\nInstance"
     str *= "\n   Contraintes : $(inst.contraintes)"
+    print(io, str)
+end
+
+function Base.show(io::IO, train::Train)
+    str = "\nTrains"
+    str *= "\n   id : $(train.id)"
+    str *= "\n   sensDepart : $(train.sensDepart)"
+    str *= "\n   voieEnLigne : $(train.voieEnLigne)"
+    str *= "\n   voieAQuai : $(train.voieAQuai)"
+    str *= "\n   typeCirculation : $(train.typeCirculation)"
+    str *= "\n   dateHeure : $(train.dateHeure)"
+    str *= "\n   typesMateriels : $(train.typesMateriels)"
+    print(io, str)
+end
+
+function Base.show(io::IO, itineraire::Itineraire)
+    str = "\nItineraires"
+    str *= "\n   id : $(itineraire.id)"
+    str *= "\n   sensDepart : $(itineraire.sensDepart)"
+    str *= "\n   voieEnLigne : $(itineraire.voieEnLigne)"
+    str *= "\n   voieAQuai : $(itineraire.voieAQuai)"
+    print(io, str)
+end
+
+function Base.show(io::IO, interdiction::InterdictionsQuais)
+    str = "\nInterdictionsQuais"
+    str *= "\n   voiesAQuaiInterdites : $(interdiction.voiesAQuaiInterdites)"
+    str *= "\n   voiesEnLigne : $(interdiction.voiesEnLigne)"
+    str *= "\n   typesMateriels : $(interdiction.typesMateriels)"
+    str *= "\n   typesCirculation : $(interdiction.typesCirculation)"
     print(io, str)
 end

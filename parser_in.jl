@@ -58,7 +58,4 @@ function read_instance(path::String)::Instance
     return Instance(trains = trains, itineraires = itineraires, voiesAQuai = voiesAQuai, voiesEnLigne = voiesEnLigne, interdictionsQuais = interdictionsQuais, contraintes = contraintes)
 end
 
-# instance_test = read_instance("TUSP/test.json")
-# print(instance_test)
-
 print(parser_in("instances/A.json"))
