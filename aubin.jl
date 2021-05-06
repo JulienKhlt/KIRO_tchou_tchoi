@@ -4,6 +4,7 @@ include("move.jl")
 include("parser_in.jl")
 include("julien.jl")
 
+# Renvoie les itinéraires possibles pour de mêmes voies
 function itineraires_possibles(itineraire::Itineraire, inst::Instance)::Vector{Itineraire}
     it_possibles = []
     for new_itineraire in inst.itineraires
@@ -18,6 +19,7 @@ end
 function best_itineraire(sol::Solution, train_idx::Int, it_possibles::Vector{Itineraire})::Itineraire
     couts = []
     for itineraire in it_possibles
+        # Calcul du coût lié à une nouvelle affectation où un train (d'indice train_idx) a un itinéraire différent
         new_affectation = Affectation_Train(id = sol.Affecte[train_idx].idx, voie_Quai = sol.Affecte[train_idx].voie_Quai, it = itineraire)
         Affecte = deepcopy(sol.Affecte)
         Affecte[train_idx] = new_affectation
@@ -27,7 +29,7 @@ function best_itineraire(sol::Solution, train_idx::Int, it_possibles::Vector{Iti
     return it_possibles[argmin(couts)]
 end
 
-# Première manière de définir un voisinage : on arrête de sous-traiter un fournisseur
+# Première manière de définir un voisinage : on change l'itinéraire d'un seul train affecté
 function changer_itineraire(sol::Solution, inst::Instance, train_idx::Int)::Solution
     Non_Affecte = sol.Non_Affecte
     Affecte = deepcopy(sol.Affecte)
@@ -38,7 +40,7 @@ function changer_itineraire(sol::Solution, inst::Instance, train_idx::Int)::Solu
         new_affectation = Affectation_Train(id = sol.Affecte[train_idx].idx, voie_Quai = sol.Affecte[train_idx].voie_Quai, it = best_it)
         Affecte[train_idx] = new_affectation
     end
-    
+
     return Solution(Non_Affecte = Non_Affecte, Affecte = Affecte)
 end
 
