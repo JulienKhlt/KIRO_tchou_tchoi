@@ -1,51 +1,51 @@
 # Fichier regroupant les structures permettant de construire l'instance
 
-struct Coord
-    x::Float64
-    y::Float64
+#= Structures utiles :
+    - Instance
+=#
 
-    Coord(; x, y) = new(x, y)
+struct Train
+    id::Int
+    sensDepart::Bool
+    voieEnLigne::String
+    voieAQuai::String
+    typeCirculation::String
+    dateHeure::String
+    typesMateriels::Vector{String}
+
+    Train(; id, sensDepart, voieEnLigne, voieAQuai, typeCirculation, dateHeure, typesMateriels) = new(id, sensDepart, voieEnLigne, voieAQuai, typeCirculation, dateHeure, typesMateriels)
+end
+struct Itineraire
+    id::Int
+    sensDepart::Bool
+    voieEnLigne::String
+    voieAQuai::String
+
+    Itineraire(; id, sensDepart, voieEnLigne, voieAQuai) = new(id, sensDepart, voieEnLigne, voieAQuai)
 end
 
-struct Depot
-    idx::Int # Indice du sommet correspondant
-    gps::Coord # Coordonnées GPS
+struct InterdictionsQuais
+    voiesAQuaiInterdites::Vector{String}
+    voiesEnLigne::Vector{String}
+    typesMateriels::Vector{String}
+    typesCirculation::Vector{String}
 
-    Depot(; idx, gps) = new(idx, gps)
-end
-
-struct Usine
-    idx::Int # Indice du sommet correspondant
-    gps::Coord # Coordonnées GPS
-
-    Usine(; idx, gps) = new(idx, gps)
-end
-
-struct Fournisseur
-    idx::Int # Indice du sommet correspondant
-    st_cost::Int # Coût de sous-traitance
-    q::Vector{Int} # Volumes par semaines
-    gps::Coord # Coordonnées GPS
-
-    Fournisseur(; idx, st_cost, q, gps) = new(idx, st_cost, q, gps)
+    InterdictionsQuais(; voiesAQuaiInterdites, voiesEnLigne, typesMateriels, typesCirculation) = new(voiesAQuaiInterdites, voiesEnLigne, typesMateriels, typesCirculation)
 end
 
 struct Instance
-    Q::Int # Taille des camions
-    F::Int # Nombre de fournisseurs
-    H::Int # Nombre de semaines
-    d::Depot # Dépôt
-    u::Usine # Usine
-    f::Vector{Fournisseur} # fournisseurs
-    dist::Matrix{Int} # Graphe des coûts
+    trains::Vector{Train}
+    itineraires::Vector{Itineraire}
+    voiesAQuai::Vector{String}
+    voiesEnLigne::Vector{String}
+    interdictionsQuais::Vector{InterdictionsQuais}
+    contraintes::Vector{Vector{Int}}
 
-    Instance(; Q, F, H, d, u, f, dist) = new(Q, F, H, d, u, f, dist)
+    Instance(; trains, itineraires, voiesAQuai, voiesEnLigne, interdictionsQuais, contraintes) = new(trains, itineraires, voiesAQuai, voiesEnLigne, interdictionsQuais, contraintes)
 end
 
-function Base.show(io::IO, instance::Instance)
+function Base.show(io::IO, inst::Instance)
     str = "\nInstance"
-    str *= "\n   Taille des camions : $(instance.Q)"
-    str *= "\n   Nombre de fournisseurs : $(instance.F)"
-    str *= "\n   Nombre de semaines : $(instance.H)"
+    str *= "\n   Contraintes : $(inst.contraintes)"
     print(io, str)
 end
