@@ -34,13 +34,13 @@ end
 
 
 function couts_train(sol::Solution, inst::Instance, train::Affectation_Train, verbose::Bool = false)
-    if train.id =="Non_Affecte"
+    if train.id =="notAffected"
         return 0
     end
     c = 0
     t1 = train.id
     i1 = train.it.id
-    for i in range length(sol.Affecte)
+    for i in 1:length(sol.Affecte)
         tp = sol.Affecte[i]
         t2 = tp.id
         i2 = tp.it.id
