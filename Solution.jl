@@ -9,7 +9,7 @@ struct Affectation_Train
     voie_Quai::String
 
     # Itinéraire
-    it::String
+    it::Itineraire
     Affectation_Train(; id, voie_Quai, it) = new(id, voie_Quai, it)
 end
 
