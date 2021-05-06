@@ -26,11 +26,11 @@ end
 function Base.show(io::IO, sol::Solution)
     str = "Non Affecte :\n"
     for i in 1:length(sol.Non_Affecte)
-        str *= " $(sol.Non_Affecte[i].id_train) "
+        str *= " $(sol.Non_Affecte[i].id) "
     end
     str *= "\nAffecte :\n"
     for i in 1:length(sol.Affecte)
-        str *= " $(sol.Affecte[i].id_train), voie : $(sol.Affecte[i].voie_Quai), itinéraire : $(sol.Affecte[i].it.id)"
+        str *= " $(sol.Affecte[i].id), voie : $(sol.Affecte[i].voie_Quai), itinéraire : $(sol.Affecte[i].it.id)"
     end
     print(io, str)
 end
