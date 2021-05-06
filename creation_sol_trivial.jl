@@ -88,46 +88,10 @@ function creation_sol(inst, nb_nonaffecte, fast=true)
         if length(Non_Affecte_groupe) == 0
             append!(Affecte, Affecte_groupe)
         else
-            quai = possible_quais(groupe, inst)
             for train in groupe
-                all_it = find_it(inst, train, quai[2])
-                all_it = find_all_possible(inst, train, all_it, quai[2])
-                if length(all_it) == 1 || fast
-                    it = all_it[1]
-                else
-                    it = best_it(inst, train.id, all_it, before)
-                end
-                push!(Affecte, Affectation_Train(id=train.id, voie_Quai=quai[1], it=it))
-                get!(before, "$(train.id)", it.id)
+                push!(Non_Affecte, Affectation_Train(id=train.id, voie_Quai="notAffected", it=Itineraire(id="notAffected", sensDepart=true, voieEnLigne="", voieAQuai="")))
             end
         end
     end
     return Solution(Non_Affecte=Non_Affecte, Affecte=Affecte)
-end
-
-function is_not_possible(train::Train, quai::String, interdictions::Vector{InterdictionsQuais})::Bool
-    for interdiction in interdictions
-        if (quai in interdiction.voiesAQuaiInterdites)
-            if (material_in(train, interdiction) || train.typeCirculation in interdiction.typesCirculation || train.voieEnLigne in interdiction.voiesEnLigne)
-                return true
-            end
-        end
-    end
-    return false
-end
-
-function possible_quais(groupe::Vector{Train}, inst::Instance)::Vector{String}
-    quais = []
-    for quai in inst.voiesAQuai
-        forbid = false
-        for train in groupe
-            if is_not_possible(train, quai, inst.interdictionsQuais)
-                forbid = true
-            end
-        end
-        if !forbid
-            push!(quais, quai)
-        end
-    end
-    return quais
 end
