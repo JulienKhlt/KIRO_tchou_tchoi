@@ -58,5 +58,5 @@ function read_instance(path::String)::Instance
     return Instance(c0 = 2000, trains = trains, itineraires = itineraires, voiesAQuai = voiesAQuai, voiesEnLigne = voiesEnLigne, interdictionsQuais = interdictionsQuais, contraintes = contraintes)
 end
 
-instance = read_instance("instances/A.json")
-println(instance)
+# instance = read_instance("instances/A.json")
+# println(instance)
