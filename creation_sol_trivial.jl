@@ -16,15 +16,20 @@ function find_all_possible(inst, train, all_it, quai)
         forbid = false
         for i in 1:length(inst.interdictionsQuais)
             if quai in inst.interdictionsQuais[i].voiesAQuaiInterdites
-                forbid = true
-                if !(material_in(train, inst.interdictionsQuais[i]) || train.typeCirculation in inst.interdictionsQuais[i].typesCirculation || train.voieEnLigne in inst.interdictionsQuais[i].voiesEnLigne)
-                    push!(new_all_it, it)
+                if (material_in(train, inst.interdictionsQuais[i]) || train.typeCirculation in inst.interdictionsQuais[i].typesCirculation || train.voieEnLigne in inst.interdictionsQuais[i].voiesEnLigne)
+                    forbid = true
                 end
             end
         end
+        
+
         if forbid == false
             push!(new_all_it, it)
         end
+    end
+    if train.id == 526
+        println(quai)
+        println(new_all_it)
     end
     return new_all_it
 end
@@ -33,15 +38,38 @@ function find_it(inst, train, quai)
     all_it = []
     for it in inst.itineraires
         if train.voieEnLigne == it.voieEnLigne && quai == it.voieAQuai && train.sensDepart == it.sensDepart 
-            return push!(all_it, it)
+            push!(all_it, it)
         end
+    end
+    if train.id == 593
+        println(quai)
+        println(all_it)
     end
     return all_it
 end
 
-function creation_sol(inst, nb_nonaffecte)
+function best_it(inst, id, all_it, before)
+    cost = [0 for i in 1:length(all_it)]
+    for i in 1:length(all_it)
+        for cont in inst.contraintes
+            if cont[2] == all_it[i].id && cont[1] == id
+                if haskey(before, "$(cont[3])") && before["$(cont[3])"] == cont[4]
+                    cost[i] += cont[5]
+                end
+            elseif cont[4] == all_it[i].id && cont[3] == id
+                if haskey(before, "$(cont[1])") && before["$(cont[1])"] == cont[2]
+                    cost[i] += cont[5]
+                end
+            end
+        end
+    end
+    return all_it[argmin(cost)]
+end
+
+function creation_sol(inst, nb_nonaffecte, fast=true)
     Non_Affecte = []
     Affecte = []
+    before = Dict()
     for groupe in inst.trains
         Affecte_groupe = []
         Non_Affecte_groupe = []
@@ -49,7 +77,13 @@ function creation_sol(inst, nb_nonaffecte)
             all_it = find_it(inst, train, train.voieAQuai)
             all_it = find_all_possible(inst, train, all_it, train.voieAQuai)
             if length(all_it) != 0
-                push!(Affecte_groupe, Affectation_Train(id=train.id, voie_Quai=train.voieAQuai, it=all_it[1]))
+                if length(all_it) == 1 || fast
+                    it = all_it[1]
+                else
+                    it = best_it(inst, train.id, all_it, before)
+                end
+                push!(Affecte_groupe, Affectation_Train(id=train.id, voie_Quai=train.voieAQuai, it=it))
+                get!(before, "$(train.id)", it.id)
             else
                 push!(Non_Affecte_groupe, Affectation_Train(id=train.id, voie_Quai="notAffected", it=Itineraire(id="notAffected", sensDepart=true, voieEnLigne="", voieAQuai="")))
             end
