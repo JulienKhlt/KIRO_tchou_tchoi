@@ -15,9 +15,9 @@ function find_all_possible(inst, train, all_it)
     for it in all_it
         forbid = false
         for i in 1:length(inst.interdictionsQuais)
-            if train.voieAQuai in inst.interdictionsQuais[i].voiesAQuai
+            if train.voieAQuai in inst.interdictionsQuais[i].voiesAQuaiInterdites
                 forbid = true
-                if !(material_in(train, inst.interdictionsQuais[i]) || train.typeCirculation in inst.interdictionsQuais[i].typesCirculation || train.voieEnLigne in inst.interdictionsQuais[i].voieEnLigne)
+                if !(material_in(train, inst.interdictionsQuais[i]) || train.typeCirculation in inst.interdictionsQuais[i].typesCirculation || train.voieEnLigne in inst.interdictionsQuais[i].voiesEnLigne)
                     push!(new_all_it, it)
                 end
             end
