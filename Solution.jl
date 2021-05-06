@@ -24,16 +24,13 @@ struct Solution
 end
 
 function Base.show(io::IO, sol::Solution)
-    str = "Fournisseur sous_traite :\n"
-    for i in 1:length(sol.Sous_traite)
-        str *= " $(sol.Sous_traite[i].idx) "
+    str = "Non Affecte :\n"
+    for i in 1:length(sol.Non_Affecte)
+        str *= " $(sol.Non_Affecte[i].id_train) "
     end
-    str *= "\nGroupe : \n"
-    for i in 1:length(sol.Groupes)
-        for j in 1:length(sol.Groupes[i])
-            str *= " $(sol.Groupes[i][j]) "
-        end
-        str *= "\n"
+    str = "\nNon Affecte :\n"
+    for i in 1:length(sol.Affecte)
+        str *= " $(sol.Affecte[i].id_train), voie : $(sol.Affecte[i].voie_Quai), itinéraire : $(sol.Affecte[i].it)"
     end
     str *= "Tournées : \n"
     for i in 1:length(sol.Tournees)

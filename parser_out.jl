@@ -2,7 +2,12 @@ include("Solution.jl")
 
 function parser_out(sol::Solution, file_name)
     dict = Dict()
-    get!(dict, "param3", 8)
+    for aff_train in sol.Non_Affecte
+        get!(dict, "$(aff_train.id_train)", Dict("voieAQuai" => aff_train.voie_Quai, "itineraire" => aff_train.it))
+    end
+    for aff_train in sol.Affecte
+        get!(dict, "$(aff_train.id_train)", Dict("voieAQuai" => aff_train.voie_Quai, "itineraire" => aff_train.it))
+    end
             
     # pass data as a json string (how it shall be displayed in a file)
     stringdata = JSON.json(dict)
