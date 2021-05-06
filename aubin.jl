@@ -49,44 +49,13 @@ function changer_itineraire(sol::Solution, inst::Instance, train_idx::Int, verbo
     return Solution(Non_Affecte = Non_Affecte, Affecte = Affecte)
 end
 
-function is_not_possible(train::Train, quai::String, interdictions::Vector{InterdictionsQuais})::Bool
-    for interdiction in interdictions
-        if (quai in interdiction.voiesAQuaiInterdites)
-            if (material_in(train, interdiction) || train.typeCirculation in interdiction.typesCirculation || train.voieEnLigne in interdiction.voiesEnLigne)
-                return true
-            end
-        end
-    end
-    return false
+names_instances = ["A", "NS", "PMP"]
+
+for name_instance in names_instances
+    inst = read_instance("instances/$(name_instance).json")
+    sol = creation_sol(inst, 0)
+    println("Solution crée !")
+    sol = descent_local(sol, inst, changer_itineraire, true)
+    println("Coût final enregistré : $(couts(sol, inst)) \n ")
+    parser_out(sol, "descenteLocaleAubin$(name_instance).json")
 end
-
-function possible_quais(groupe::Vector{Train}, inst::Instance)::Vector{String}
-    quais = []
-    for quai in inst.voiesAQuai
-        forbid = false
-        for train in groupe
-            if is_not_possible(train, quai, inst.interdictionsQuais)
-                forbid = true
-            end
-        end
-        if !forbid
-            push!(quais, quai)
-        end
-    end
-    return quais
-end
-
-inst = read_instance("instances/NS.json")
-sol = creation_sol(inst, 0)
-println(inst)
-
-# names_instances = ["A", "NS", "PMP", "PE"]
-
-# for name_instance in names_instances
-#     inst = read_instance("instances/$(name_instance).json")
-#     sol = creation_sol(inst, 0)
-#     println("Solution crée !")
-#     sol = descent_local(sol, inst, changer_itineraire, true)
-#     println("Coût final enregistré : $(couts(sol, inst)) \n ")
-#     parser_out(sol, "descenteLocaleAubin$(name_instance).json")
-# end
