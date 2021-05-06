@@ -47,5 +47,6 @@ for i in 1:length(inst.trains)
 end
 sol = Solution(Non_Affecte=Non_Affecte, Affecte=Affecte)
 println(sol)
-println(couts(sol, inst, true))
+println(@time couts(sol, inst, true))
+println(@time couts(sol, inst, true))
 parser_out(sol, "test.json")
