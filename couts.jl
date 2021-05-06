@@ -10,19 +10,15 @@ include("Solution.jl")
 function couts(sol::Solution, inst::Instance, verbose::Bool = false)
     c_n_a = length(sol.Non_Affecte)*inst.c0
     c_n = 0
-    copy_contraintes = deepcopy(inst.contraintes)
     for t in sol.Affecte
-        println("i ", t.id)
         for tp in sol.Affecte
             t1 = t.id
             i1 = t.it.id
             t2 = tp.id
             i2 = tp.it.id
-            for i in 1:length(copy_contraintes)
-                cont = copy_contraintes[i]
+            for cont in inst.contraintes
                 if t1 == cont[1] && i1 == cont[2] && t2 == cont[3] && i2 == cont[4]
                     c_n +=cont[5]
-                    deleteat!(copy_contraintes,i)
                 end
             end
         end
