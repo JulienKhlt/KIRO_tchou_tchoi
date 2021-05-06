@@ -7,27 +7,27 @@ couts:
 
 include("Solution.jl")
 
-function cout_tournee(t::Tournee, i::Instance) #cout pour une tournée
-    s = i.dist[i.d.idx+1, t.fournisseurs[1].idx+1]
-    for j in 1:(length(t.fournisseurs)-1)
-        s += i.dist[t.founisseurs[j].idx+1,t.fournisseurs[j+1].idx+1]
+function couts(sol::Solution, inst::Instance, verbose::Bool= False)
+    c_n_a = length(sol.Non_Affecte)*inst.c0
+    c_n = 0
+    for t in sol.Affecte
+        for tp in sol.Affecte
+            t1 = t.id_train
+            i1 = t.it
+            t2 = tp.id_train
+            i2 = tp.it
+            for cont in inst.contraintes
+                if t1 == cont[1] && i1 == cont[2] && t2 == cont[3] && i2 == cont[4]
+                    c_n +=cont[5]
+                end
+            end
+        end
     end
-    s += i.dist[t.fournisseurs[end].idx+1, i.u.idx+1]
-    return s
-end
 
-function couts(sol::Solution, inst::Instance)
-    c = 0
-    for t in sol.Tournees
-        c += cout_tournee(t,inst)
+    if verbose
+        println("couts non affectés : ", c_n_a)
+        println("couts affectés : ", c_n)
     end
-    for f in sol.Sous_traite
-        c += f.st_cost
-    end
-    return c
-end
 
-function couts(large::Float64, inst::Instance)
-    return large
+    return c_a + c_n
 end
-
