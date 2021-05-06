@@ -35,6 +35,7 @@ struct InterdictionsQuais
 end
 
 struct Instance
+    c0::Int
     trains::Vector{Vector{Train}}
     itineraires::Vector{Itineraire}
     voiesAQuai::Vector{String}
@@ -42,11 +43,12 @@ struct Instance
     interdictionsQuais::Vector{InterdictionsQuais}
     contraintes::Vector{Vector{Int}}
 
-    Instance(; trains, itineraires, voiesAQuai, voiesEnLigne, interdictionsQuais, contraintes) = new(trains, itineraires, voiesAQuai, voiesEnLigne, interdictionsQuais, contraintes)
+    Instance(; c0, trains, itineraires, voiesAQuai, voiesEnLigne, interdictionsQuais, contraintes) = new(c0, trains, itineraires, voiesAQuai, voiesEnLigne, interdictionsQuais, contraintes)
 end
 
 function Base.show(io::IO, inst::Instance)
     str = "\nInstance"
+    str *= "\n   Coût de non affectation : $(inst.c0)"
     str *= "\n   Nombre de groupes : $(length(inst.trains))"
     # str *= "\n   Nombre de trains par groupe : $([size(inst.trains[g], 1) for g = 1:inst.trains])"
     str *= "\n   Nombre d'itinéraires : $(length(inst.itineraires))"

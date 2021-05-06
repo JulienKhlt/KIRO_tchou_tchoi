@@ -55,7 +55,8 @@ function read_instance(path::String)::Instance
     interdictionsQuais = [read_interdiction(interdiction) for interdiction in dict["interdictionsQuais"]]
     contraintes = dict["contraintes"]
 
-    return Instance(trains = trains, itineraires = itineraires, voiesAQuai = voiesAQuai, voiesEnLigne = voiesEnLigne, interdictionsQuais = interdictionsQuais, contraintes = contraintes)
+    return Instance(c0 = 2000, trains = trains, itineraires = itineraires, voiesAQuai = voiesAQuai, voiesEnLigne = voiesEnLigne, interdictionsQuais = interdictionsQuais, contraintes = contraintes)
 end
 
-print(read_instance("instances/A.json"))
+instance = read_instance("instances/A.json")
+print(instance)
