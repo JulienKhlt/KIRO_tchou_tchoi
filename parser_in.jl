@@ -38,12 +38,12 @@ function read_itineraire(dict::Dict)::Itineraire
 end
 
 function read_interdiction(dict::Dict)::InterdictionsQuais
-    id = dict["id"]
-    sensDepart = dict["sensDepart"]
-    voieEnLigne = dict["voieEnLigne"]
-    voieAQuai = dict["voieAQuai"]
-
-    return InterdictionsQuais(id = id, sensDepart = sensDepart, voieEnLigne = voieEnLigne, voieAQuai = voieAQuai)
+    voiesAQuaiInterdites = dict["voiesAQuaiInterdites"]
+    voiesEnLigne = dict["voiesEnLigne"]
+    typesMateriels = dict["typesMateriels"]
+    typesCirculation = dict["typesCirculation"]
+    
+    return InterdictionsQuais(voiesAQuaiInterdites = voiesAQuaiInterdites, voiesEnLigne = voiesEnLigne, typesMateriels = typesMateriels, typesCirculation = typesCirculation)
 end
 
 function read_instance(path::String)::Instance
