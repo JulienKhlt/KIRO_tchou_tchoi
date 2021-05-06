@@ -1,33 +1,26 @@
 using JSON
 include("Instance.jl")
 
-struct Tournee
-    # Num du Groupe
-    id_grpe::Int
+struct Affectation_Train
+    # Id du train
+    id_train::Int
 
-    # Semaine
-    s::Int
+    # Quai
+    voie_Quai::String
 
-    # Liste des id des fournisseurs ordonnés
-    fournisseurs::Vector{Fournisseur}
-
-    # Liste des quantites pris au fournisseur
-    quantites::Vector{Int}
-
-    Tournee(; id_grpe, s, fournisseurs, quantites) = new(id_grpe, s, fournisseurs, quantites)
+    # Itinéraire
+    it::String
+    Affectation_Train(; id_train, voie_Quai, it) = new(id_train, voie_Quai, it)
 end
 
 struct Solution
     # Liste des id des fournisseurs sous traité
-    Sous_traite::Vector{Fournisseur}
+    Non_Affecte::Vector{Affectation_Train}
     
     # Liste des groupes qui contiennent les indices des fournisseurs
-    Groupes::Vector{Vector{Int}}
+    Affecte::Vector{Affectation_Train}
 
-    # Liste des Tournees
-    Tournees::Vector{Tournee}
-
-    Solution(; Sous_traite, Groupes, Tournees) = new(Sous_traite, Groupes, Tournees)
+    Solution(; Non_Affecte, Affecte) = new(Non_Affecte, Affecte)
 end
 
 function Base.show(io::IO, sol::Solution)
