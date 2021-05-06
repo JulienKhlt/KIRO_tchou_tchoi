@@ -1,7 +1,7 @@
 using JSON
 include("Instance.jl")
 
-struct Affectation_Train
+mutable struct Affectation_Train
     # Id du train
     id::Int
 
