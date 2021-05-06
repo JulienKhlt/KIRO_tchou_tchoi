@@ -3,14 +3,14 @@ include("Instance.jl")
 
 struct Affectation_Train
     # Id du train
-    id_train::Int
+    id::Int
 
     # Quai
     voie_Quai::String
 
     # Itinéraire
     it::String
-    Affectation_Train(; id_train, voie_Quai, it) = new(id_train, voie_Quai, it)
+    Affectation_Train(; id, voie_Quai, it) = new(id, voie_Quai, it)
 end
 
 struct Solution
@@ -28,16 +28,9 @@ function Base.show(io::IO, sol::Solution)
     for i in 1:length(sol.Non_Affecte)
         str *= " $(sol.Non_Affecte[i].id_train) "
     end
-    str = "\nNon Affecte :\n"
+    str *= "\nAffecte :\n"
     for i in 1:length(sol.Affecte)
         str *= " $(sol.Affecte[i].id_train), voie : $(sol.Affecte[i].voie_Quai), itinéraire : $(sol.Affecte[i].it)"
-    end
-    str *= "Tournées : \n"
-    for i in 1:length(sol.Tournees)
-        str *= " $(sol.Tournees[i].s) $(sol.Tournees[i].id_grpe)\n"
-        for j in 1:length(sol.Tournees[i].fournisseurs)
-            str *= "    $(sol.Tournees[i].fournisseurs[j].idx) $(sol.Tournees[i].quantites[j])\n"
-        end
     end
     print(io, str)
 end
