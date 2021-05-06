@@ -58,4 +58,4 @@ function read_instance(path::String)::Instance
     return Instance(trains = trains, itineraires = itineraires, voiesAQuai = voiesAQuai, voiesEnLigne = voiesEnLigne, interdictionsQuais = interdictionsQuais, contraintes = contraintes)
 end
 
-print(parser_in("instances/A.json"))
+print(read_instance("instances/A.json"))

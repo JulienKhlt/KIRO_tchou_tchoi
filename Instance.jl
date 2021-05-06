@@ -47,7 +47,13 @@ end
 
 function Base.show(io::IO, inst::Instance)
     str = "\nInstance"
-    str *= "\n   Contraintes : $(inst.contraintes)"
+    str *= "\n   Nombre de groupes : $(length(inst.trains))"
+    # str *= "\n   Nombre de trains par groupe : $([size(inst.trains[g], 1) for g = 1:inst.trains])"
+    str *= "\n   Nombre d'itinéraires : $(length(inst.itineraires))"
+    str *= "\n   Voies à quai : $(inst.voiesAQuai)"
+    str *= "\n   Voies en ligne : $(inst.voiesEnLigne)"
+    str *= "\n   Nombre d'interdictions : $(length(inst.interdictionsQuais))"
+    str *= "\n   Nombre de contraintes : $(length(inst.contraintes))"
     print(io, str)
 end
 
