@@ -13,12 +13,17 @@ end
 function find_all_possible(inst, train, all_it)
     new_all_it = []
     for it in all_it
+        forbid = false
         for i in 1:length(inst.interdictionsQuais)
-            if train.voieEnLigne in inst.interdictionsQuais[i].voiesEnLigne
+            if train.voieAQuai in inst.interdictionsQuais[i].voiesAQuai
+                forbid = true
                 if !(material_in(train, inst.interdictionsQuais[i]) || train.typeCirculation in inst.interdictionsQuais[i].typesCirculation || train.voieEnLigne in inst.interdictionsQuais[i].voieEnLigne)
                     push!(new_all_it, it)
                 end
             end
+        end
+        if forbid == false
+            push!(new_all_it, it)
         end
     end
     return new_all_it
@@ -27,7 +32,7 @@ end
 function find_it(inst, train)
     all_it = []
     for it in inst.itineraires
-        if train.voieEnLigne == it.voieEnLigne && train.voieAQuai == it.voieAQuai
+        if train.voieEnLigne == it.voieEnLigne && train.voieAQuai == it.voieAQuai && train.sensDepart == it.sensDepart 
             return push!(all_it, it)
         end
     end
@@ -42,11 +47,9 @@ function creation_sol(inst, nb_nonaffecte)
         Non_Affecte_groupe = []
         for train in groupe
             all_it = find_it(inst, train)
-            println(all_it)
             all_it = find_all_possible(inst, train, all_it)
-            println(all_it)
             if length(all_it) != 0
-                push!(Affecte, Affectation_Train(id=train.id, voie_Quai=train.voie_Quai, it=all_it[1]))
+                push!(Affecte, Affectation_Train(id=train.id, voie_Quai=train.voieAQuai, it=all_it[1]))
             else
                 push!(Non_Affecte, Affectation_Train(id=train.id, voie_Quai="notAffected", it=Itineraire(id="notAffected", sensDepart=true, voieEnLigne="", voieAQuai="")))
             end
