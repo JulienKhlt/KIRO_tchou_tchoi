@@ -59,4 +59,4 @@ function read_instance(path::String)::Instance
 end
 
 instance = read_instance("instances/A.json")
-print(instance)
+println(instance)
