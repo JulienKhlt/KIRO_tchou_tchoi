@@ -34,12 +34,26 @@ end
 
 
 function couts_train(sol::Solution, inst::Instance, train::Affectation_Train, verbose::Bool = false)
-    if train.id =="Non_Affecte"
+    if train.id =="notAffected"
         return 0
     end
     c = 0
-    for i in range length(sol.Affecte)
-        t1=train.id
-
+    t1 = train.id
+    i1 = train.it.id
+    for i in 1:length(sol.Affecte)
+        tp = sol.Affecte[i]
+        t2 = tp.id
+        i2 = tp.it.id
+        for cont in inst.contraintes
+            if t1 == cont[1] && i1 == cont[2] && t2 == cont[3] && i2 == cont[4]
+                c +=cont[5]
+            end
+        end
     end
+
+    if verbose
+        println("le train ", train.id, " coute ", c)
+    end
+
+    return c
 end

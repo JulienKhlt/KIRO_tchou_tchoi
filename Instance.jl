@@ -55,7 +55,7 @@ function Base.show(io::IO, inst::Instance)
     str *= "\n   Voies à quai : $(inst.voiesAQuai)"
     str *= "\n   Voies en ligne : $(inst.voiesEnLigne)"
     str *= "\n   Nombre d'interdictions : $(length(inst.interdictionsQuais))"
-    str *= "\n   Nombre de contraintes : $(length(inst.contraintes))"
+    str *= "\n   Nombre de contraintes : $(length(inst.contraintes)) \n"
     print(io, str)
 end
 
